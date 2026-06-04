@@ -807,6 +807,7 @@ body {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('open');
             });
+ 
         });
          // === SCROLL REVEAL ===
     const revealElements = document.querySelectorAll('.reveal');
@@ -818,7 +819,18 @@ body {
         });
     }, { threshold: 0.1 });
 
-        revealElements.forEach(el => observer.observe(el));
+    revealElements.forEach(el => observer.observe(el));
+});
+
+// === SPLASH SCREEN TIMEOUT (Yeh tumhara missing code hai) ===
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.classList.add('splash-screen-hidden');
+        }
+    }, 3000); // 3 Seconds ka waiting time
+});
 </script>
 
 <!-- Footer Section -->
@@ -832,7 +844,5 @@ body {
 </footer>
 
 </body>
-</html>
-             
-
-        
+</html>             
+ 
