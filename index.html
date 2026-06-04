@@ -789,27 +789,28 @@ body {
         }
         drawStars();
 
-        // === NAVBAR SCROLL EFFECT ===
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 60);
-        });
+            // === NAVBAR SCROLL EFFECT ===
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scaled', window.scrollY > 60);
+    });
 
-        // === MOBILE HAMBURGER ===
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('navLinks');
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navLinks.classList.toggle('open');
+    // === MOBILE HAMBURGER ===
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('open');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('open');
         });
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('open');
-            });
- 
-        });
-         // === SCROLL REVEAL ===
+    });
+
+    // === SCROLL REVEAL ===
     const revealElements = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -820,16 +821,16 @@ body {
     }, { threshold: 0.1 });
 
     revealElements.forEach(el => observer.observe(el));
-});
 
-// === SPLASH SCREEN TIMEOUT (Yeh tumhara missing code hai) ===
+
+// === SPLASH SCREEN TIMEOUT ===
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
         if (splash) {
             splash.classList.add('splash-screen-hidden');
         }
-    }, 3000); // 3 Seconds ka waiting time
+    }, 3000); // 3 Seconds waiting time
 });
 </script>
 
@@ -844,5 +845,5 @@ window.addEventListener('DOMContentLoaded', () => {
 </footer>
 
 </body>
-</html>             
- 
+</html>
+             
