@@ -808,37 +808,32 @@ body {
                 navLinks.classList.remove('open');
             });
         });
+         // === SCROLL REVEAL ===
+    const revealElements = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
 
-        // === SCROLL REVEAL ===
-        const revealElements = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.15 });
+    revealElements.forEach(el => observer.observe(el));
+});
+</script>
 
-        revealElements.forEach(el => observer.observe(el));
-    </script>
-                
-     
-    <!-- JavaScript yahan khatam ho gayi -->
+<!-- Footer Section -->
+<footer style="text-align: center; padding: 30px 20px; background-color: #0a0a17; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 50px;">
+    <p style="font-family: 'Inter', sans-serif; color: #f0c040; font-size: 16px; letter-spacing: 1px; margin: 0;">
+        Made with ❤️ by <span style="font-family: 'Playfair Display', serif; font-weight: bold;">Shivansh Goswami</span>
+    </p>
+    <p style="font-family: 'Inter', sans-serif; color: #ffffff; font-size: 12px; margin-top: 10px; opacity: 0.5; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Disclaimer: This is a student portfolio project created for educational purposes. It is not the official website of Silver City Academy, and the official logo belongs to the respective institution.
+    </p>
+</footer>
 
-    <!-- Footer Section - Ab yeh sahi jagah par hai -->
-    <footer style="text-align: center; padding: 30px 20px; background-color: #0a0a17; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 50px;">
-        <p style="font-family: 'Inter', sans-serif; color: #f0c040; font-size: 16px; letter-spacing: 1px; margin: 0;">
-            Made with ❤️ by <span style="font-family: 'Playfair Display', serif; font-weight: bold;">Shivansh Goswami</span>
-        </p>
-        <p style="font-family: 'Inter', sans-serif; color: #ffffff; font-size: 12px; margin-top: 10px; opacity: 0.5; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
-            Disclaimer: This is a student portfolio project created for educational purposes. It is not the official website of Silver City Academy, and the official logo belongs to the respective institution.
-        </p>
-    </footer>
-
-</body>
-            </html>
-             
-
-             
 </body>
 </html>
+             
+
+        
