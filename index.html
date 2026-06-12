@@ -1025,25 +1025,12 @@ if (canvas) {
 }
 
 
-    // 2. Preloader Hatane wala logic (Force Remove)
+// === PRELOADER REMOVAL ===
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
-        // Force hide
-        splash.style.setProperty('display', 'none', 'important');
-        splash.style.visibility = 'hidden';
+        splash.style.display = 'none';
     }
-});
-    
-</script>
-      // === SPLASH SCREEN TIMEOUT ===
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        const splash = document.getElementById('splash-screen');
-        if (splash) {
-            splash.classList.add('splash-screen-hidden');
-        }
-    }, 3000); 
 });
 </script>
 
@@ -1054,5 +1041,5 @@ window.addEventListener('DOMContentLoaded', () => {
 </footer>
 
 </body>
-            </html>
+</html>
                 
