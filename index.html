@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="google-site-verification" content="61zyUxITd7h9pR3Zm5EdD08frO818yj_NFmU7CuebDk" />
@@ -793,7 +793,9 @@ body {
     </footer>
 
     <!-- ===== JAVASCRIPT ===== -->
-    <script>
+        }
+    update() {
+        this.x += this.speedX;<script>
         // === STARFIELD ===
         const canvas = document.getElementById('starfield');
         const ctx = canvas.getContext('2d');
@@ -924,51 +926,168 @@ window.addEventListener('touchmove', function(event) {
 });
 
 class Particle {
+<script>
+// === STARFIELD & INTERACTIVE PARTICLES ===
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+
+let stars = [];
+let particlesArray = [];
+let W, H;
+
+function resizeCanvas() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Mouse/Touch Object for Glow Stars
+const mouse = {
+    x: null,
+    y: null
+}
+
+// Sparkle Effect on Move/Touch
+window.addEventListener('mousemove', function(event) {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY;
+    createParticle();
+});
+
+window.addEventListener('touchmove', function(event) {
+    mouse.x = event.touches[0].clientX;
+    mouse.y = event.touches[0].clientY;
+    createParticle();
+});
+
+// Create background stars
+for (let i = 0; i < 200; i++) {
+    stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.8 + 0.2,
+        dx: (Math.random() - 0.5) * 0.15,
+        dy: (Math.random() - 0.5) * 0.15,
+        a: Math.random() * 0.8 + 0.2,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        twinklePhase: Math.random() * Math.PI * 2
+    });
+}
+
+// Particle Class for Interactive Touch Stars
+class TouchParticle {
     constructor() {
         this.x = mouse.x;
         this.y = mouse.y;
-        this.size = Math.random() * 5 + 1;
-        this.speedX = Math.random() * 3 - 1.5;
-        this.speedY = Math.random() * 3 - 1.5;
-        this.color = '#f0c040';
+        this.size = Math.random() * 4 + 1;
+        this.speedX = (Math.random() - 0.5) * 3;
+        this.speedY = (Math.random() - 0.5) * 3;
+        this.color = '#f0c040'; // Neon gold color
+        this.alpha = 1;
     }
     update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        if (this.size > 0.2) this.size -= 0.1;
+        this.alpha -= 0.02; // Smooth fade out
     }
     draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#f0c040'; // Glow Effect
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
     }
 }
 
 function createParticle() {
-    for (let i = 0; i < 2; i++) {
-        particlesArray.push(new Particle());
-    }
-}
-
-function handleParticles() {
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-        particlesArray[i].draw();
-        if (particlesArray[i].size <= 0.2) {
-            particlesArray.splice(i, 1);
-            i--;
+    if(mouse.x !== null && mouse.y !== null) {
+        for (let i = 0; i < 2; i++) {
+            particlesArray.push(new TouchParticle());
         }
     }
 }
 
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    handleParticles();
-    requestAnimationFrame(animate);
+function drawStars() {
+    ctx.clearRect(0, 0, W, H);
+    
+    // 1. Background Moving Stars
+    stars.forEach(s => {
+        s.x += s.dx;
+        s.y += s.dy;
+        if (s.x < 0) s.x = W;
+        if (s.x > W) s.x = 0;
+        if (s.y < 0) s.y = H;
+        if (s.y > H) s.y = 0;
+        const alpha = s.a * (0.6 + 0.4 * Math.sin(Date.now() * s.twinkleSpeed + s.twinklePhase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+        ctx.fill();
+    });
+
+    // 2. Interactive Touch Particles
+    for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+        if (particlesArray[i].alpha <= 0) {
+            particlesArray.splice(i, 1);
+            i--;
+        }
+    }
+    
+    requestAnimationFrame(drawStars);
 }
-animate();
+drawStars();
+
+// === NAVBAR SCROLL EFFECT ===
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scaled', window.scrollY > 60);
+});
+
+// === MOBILE HAMBURGER ===
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('open');
+});
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('open');
+    });
+});
+
+// === SCROLL REVEAL ===
+const revealElements = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+revealElements.forEach(el => observer.observe(el));
+
+// === SPLASH SCREEN TIMEOUT ===
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.classList.add('splash-screen-hidden');
+        }
+    }, 3000);
+});
 </script>
+             
              
 </body>
 </html>
