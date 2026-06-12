@@ -976,69 +976,29 @@ for (let i = 0; i < 200; i++) {
         twinkleSpeed: Math.random() * 0.02 + 0.005,
         twinklePhase: Math.random() * Math.PI * 2
     });
-}
-
-// Particle Class for Interactive Touch Stars
-class TouchParticle {
-    constructor() {
-        this.x = mouse.x;
-        this.y = mouse.y;
-        this.size = Math.random() * 4 + 1;
-        this.speedX = (Math.random() - 0.5) * 3;
-        this.speedY = (Math.random() - 0.5) * 3;
-        this.color = '#f0c040'; // Neon gold color
-        this.alpha = 1;
-    }
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.alpha -= 0.02; // Smooth fade out
-    }
-    draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#f0c040'; // Glow Effect
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-    }
-}
-
-function createParticle() {
-    if(mouse.x !== null && mouse.y !== null) {
-        for (let i = 0; i < 2; i++) {
-            particlesArray.push(new TouchParticle());
-        }
-    }
-}
 <script>
-// === STARFIELD & PARTICLES ===
+// 1. Splash Screen Timer
+window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.display = 'none', 500);
+    }
+});
+
+// 2. Starfield & Particles (Ek hi baar)
 const canvas = document.getElementById('starfield');
 if (canvas) {
     const ctx = canvas.getContext('2d');
     let W, H;
     let particlesArray = [];
-<script>
-// === STARFIELD & INTERACTIVE PARTICLES ===
-const canvas = document.getElementById('starfield');
-if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let W, H;
-    let particlesArray = [];
-
+    
     function resize() {
         W = canvas.width = window.innerWidth;
         H = canvas.height = window.innerHeight;
     }
     resize();
     window.addEventListener('resize', resize);
-
-    window.addEventListener('mousemove', (e) => {
-        for(let i=0; i<2; i++) particlesArray.push(new Particle(e.clientX, e.clientY));
-    });
 
     class Particle {
         constructor(x, y) {
@@ -1058,6 +1018,10 @@ if (canvas) {
         }
     }
 
+    window.addEventListener('mousemove', (e) => {
+        for(let i=0; i<2; i++) particlesArray.push(new Particle(e.clientX, e.clientY));
+    });
+
     function animate() {
         ctx.clearRect(0, 0, W, H);
         particlesArray.forEach((p, i) => {
@@ -1068,15 +1032,6 @@ if (canvas) {
     }
     animate();
 }
-
-// === PRELOADER REMOVAL ===
-window.addEventListener('load', () => {
-    const splash = document.getElementById('splash-screen');
-    if(splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => splash.style.display = 'none', 500);
-    }
-});
 </script>
 </body>
 </html>
