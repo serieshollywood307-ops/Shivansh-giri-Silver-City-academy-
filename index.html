@@ -976,68 +976,26 @@ for (let i = 0; i < 200; i++) {
         twinkleSpeed: Math.random() * 0.02 + 0.005,
         twinklePhase: Math.random() * Math.PI * 2
     });
+
+
 <script>
-// 1. Starfield & Particles
-const canvas = document.getElementById('starfield');
-if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let W, H;
-    let particlesArray = [];
-
-    function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    class Particle {
-        constructor(x, y) {
-            this.x = x; this.y = y;
-            this.size = Math.random() * 3 + 1;
-            this.speedX = (Math.random() - 0.5) * 2;
-            this.speedY = (Math.random() - 0.5) * 2;
-            this.alpha = 1;
+    // Ye code tabhi chalega jab pura page load ho jayega
+    window.onload = function() {
+        var splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.style.display = 'none';
         }
-        update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
-        draw() {
-            ctx.globalAlpha = this.alpha;
-            ctx.fillStyle = '#f0c040';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
+    };
+
+    // Backup: Agar load hone mein error aaye, toh 5 second baad khud hata do
+    setTimeout(function() {
+        var splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.style.display = 'none';
         }
-    }
-
-    window.addEventListener('mousemove', (e) => {
-        for(let i=0; i<2; i++) particlesArray.push(new Particle(e.clientX, e.clientY));
-    });
-
-    function animate() {
-        ctx.clearRect(0, 0, W, H);
-        particlesArray.forEach((p, i) => {
-            p.update(); p.draw();
-            if(p.alpha <= 0) particlesArray.splice(i, 1);
-        });
-        requestAnimationFrame(animate);
-    }
-    animate();
-}
-
-// 2. Preloader Hatane wala logic (Clean)
-window.addEventListener('load', () => {
-    const splash = document.getElementById('splash-screen');
-    if (splash) {
-        splash.style.display = 'none';
-    }
-});
+    }, 5000);
 </script>
-
-<footer style="text-align: center; padding: 30px 20px; background-color: #0a0a17; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 50px;">
-    <p style="font-family: 'Inter', sans-serif; color: #f0c040; font-size: 16px;">
-        Made with ❤️ by Shivansh Goswami
-    </p>
-</footer>
+                
 
 </body>
 </html>
