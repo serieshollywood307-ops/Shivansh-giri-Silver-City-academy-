@@ -894,7 +894,8 @@ window.addEventListener('DOMContentLoaded', () => {
     </p>
 </footer>
 <script>
-const canvas = document.getElementById('particle-canvas');
+const canvas = document.getElementById('starfield');
+    
 const ctx = canvas.getContext('2d');
 
 let particlesArray = [];
@@ -1034,62 +1035,85 @@ function drawStars() {
 
     // 2. Interactive Touch Particles
     for (let i = 0; i < particlesArray.length; i++) {
+<script>
+// === SINGLE CANVAS LOGIC ===
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let particlesArray = [];
+let W, H;
+
+function resizeCanvas() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Interaction
+const mouse = { x: null, y: null };
+window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; createParticle(); });
+window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; createParticle(); });
+
+// Particles
+class Particle {
+    constructor(x, y) {
+        this.x = x; this.y = y;
+        this.size = Math.random() * 4 + 1;
+        this.speedX = (Math.random() - 0.5) * 3;
+        this.speedY = (Math.random() - 0.5) * 3;
+        this.color = '#f0c040';
+        this.alpha = 1;
+    }
+    update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
+<script>
+// === STARFIELD & INTERACTIVE PARTICLES ===
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let stars = [], particlesArray = [], W, H;
+
+function resizeCanvas() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const mouse = { x: null, y: null };
+window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; createParticle(); });
+window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; createParticle(); });
+
+class Particle {
+    constructor(x, y) {
+        this.x = x; this.y = y;
+        this.size = Math.random() * 4 + 1;
+        this.speedX = (Math.random() - 0.5) * 3;
+        this.speedY = (Math.random() - 0.5) * 3;
+        this.alpha = 1;
+    }
+    update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
+    draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = '#f0c040'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+}
+
+function createParticle() { for(let i=0; i<2; i++) particlesArray.push(new Particle(mouse.x, mouse.y)); }
+
+function animate() {
+    ctx.clearRect(0, 0, W, H);
+    for(let i=0; i<particlesArray.length; i++) {
         particlesArray[i].update();
         particlesArray[i].draw();
-        if (particlesArray[i].alpha <= 0) {
-            particlesArray.splice(i, 1);
-            i--;
-        }
+        if(particlesArray[i].alpha <= 0) { particlesArray.splice(i, 1); i--; }
     }
-    
-    requestAnimationFrame(drawStars);
+    requestAnimationFrame(animate);
 }
-drawStars();
+animate();
 
-// === NAVBAR SCROLL EFFECT ===
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scaled', window.scrollY > 60);
-});
-
-// === MOBILE HAMBURGER ===
-const hamburger = document.getElementById('hamburger');
-const navLinks = document.getElementById('navLinks');
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navLinks.classList.toggle('open');
-});
-
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('open');
-    });
-});
-
-// === SCROLL REVEAL ===
-const revealElements = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, { threshold: 0.1 });
-
-revealElements.forEach(el => observer.observe(el));
-
-// === SPLASH SCREEN TIMEOUT ===
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
-        if (splash) {
-            splash.classList.add('splash-screen-hidden');
-        }
+        if(splash) splash.classList.add('splash-screen-hidden');
     }, 3000);
 });
 </script>
-
 </body>
 </html>
-                
