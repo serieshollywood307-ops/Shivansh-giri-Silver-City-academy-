@@ -1021,6 +1021,13 @@ if (canvas) {
     const ctx = canvas.getContext('2d');
     let W, H;
     let particlesArray = [];
+<script>
+// === STARFIELD & INTERACTIVE PARTICLES ===
+const canvas = document.getElementById('starfield');
+if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let particlesArray = [];
 
     function resize() {
         W = canvas.width = window.innerWidth;
@@ -1029,7 +1036,6 @@ if (canvas) {
     resize();
     window.addEventListener('resize', resize);
 
-    // Mouse Interaction
     window.addEventListener('mousemove', (e) => {
         for(let i=0; i<2; i++) particlesArray.push(new Particle(e.clientX, e.clientY));
     });
@@ -1056,14 +1062,14 @@ if (canvas) {
         ctx.clearRect(0, 0, W, H);
         particlesArray.forEach((p, i) => {
             p.update(); p.draw();
-            if(p.alpha <= 0) { particlesArray.splice(i, 1); }
+            if(p.alpha <= 0) particlesArray.splice(i, 1);
         });
         requestAnimationFrame(animate);
     }
     animate();
 }
 
-// === PRELOADER REMOVAL (IMPORTANT) ===
+// === PRELOADER REMOVAL ===
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash-screen');
     if(splash) {
