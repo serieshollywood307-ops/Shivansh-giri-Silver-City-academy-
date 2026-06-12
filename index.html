@@ -977,22 +977,13 @@ for (let i = 0; i < 200; i++) {
         twinklePhase: Math.random() * Math.PI * 2
     });
 <script>
-// 1. Splash Screen Timer
-window.addEventListener('load', () => {
-    const splash = document.getElementById('splash-screen');
-    if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => splash.style.display = 'none', 500);
-    }
-});
-
-// 2. Starfield & Particles (Ek hi baar)
+// 1. Starfield & Particles
 const canvas = document.getElementById('starfield');
 if (canvas) {
     const ctx = canvas.getContext('2d');
     let W, H;
     let particlesArray = [];
-    
+
     function resize() {
         W = canvas.width = window.innerWidth;
         H = canvas.height = window.innerHeight;
@@ -1032,7 +1023,12 @@ if (canvas) {
     }
     animate();
 }
+
+// 2. Preloader Hatane wala logic
+window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+        splash.style.display = 'none';
+    }
+});
 </script>
-</body>
-</html>
-                
