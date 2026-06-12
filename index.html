@@ -1014,106 +1014,64 @@ function createParticle() {
         }
     }
 }
+<script>
+// === STARFIELD & PARTICLES ===
+const canvas = document.getElementById('starfield');
+if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    let particlesArray = [];
 
-function drawStars() {
-    ctx.clearRect(0, 0, W, H);
-    
-    // 1. Background Moving Stars
-    stars.forEach(s => {
-        s.x += s.dx;
-        s.y += s.dy;
-        if (s.x < 0) s.x = W;
-        if (s.x > W) s.x = 0;
-        if (s.y < 0) s.y = H;
-        if (s.y > H) s.y = 0;
-        const alpha = s.a * (0.6 + 0.4 * Math.sin(Date.now() * s.twinkleSpeed + s.twinklePhase));
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        ctx.fill();
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Mouse Interaction
+    window.addEventListener('mousemove', (e) => {
+        for(let i=0; i<2; i++) particlesArray.push(new Particle(e.clientX, e.clientY));
     });
 
-    // 2. Interactive Touch Particles
-    for (let i = 0; i < particlesArray.length; i++) {
-<script>
-// === SINGLE CANVAS LOGIC ===
-const canvas = document.getElementById('starfield');
-const ctx = canvas.getContext('2d');
-let stars = [];
-let particlesArray = [];
-let W, H;
-
-function resizeCanvas() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-// Interaction
-const mouse = { x: null, y: null };
-window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; createParticle(); });
-window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; createParticle(); });
-
-// Particles
-class Particle {
-    constructor(x, y) {
-        this.x = x; this.y = y;
-        this.size = Math.random() * 4 + 1;
-        this.speedX = (Math.random() - 0.5) * 3;
-        this.speedY = (Math.random() - 0.5) * 3;
-        this.color = '#f0c040';
-        this.alpha = 1;
+    class Particle {
+        constructor(x, y) {
+            this.x = x; this.y = y;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = (Math.random() - 0.5) * 2;
+            this.speedY = (Math.random() - 0.5) * 2;
+            this.alpha = 1;
+        }
+        update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
+        draw() {
+            ctx.globalAlpha = this.alpha;
+            ctx.fillStyle = '#f0c040';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
-    update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
-<script>
-// === STARFIELD & INTERACTIVE PARTICLES ===
-const canvas = document.getElementById('starfield');
-const ctx = canvas.getContext('2d');
-let stars = [], particlesArray = [], W, H;
 
-function resizeCanvas() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-const mouse = { x: null, y: null };
-window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; createParticle(); });
-window.addEventListener('touchmove', (e) => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; createParticle(); });
-
-class Particle {
-    constructor(x, y) {
-        this.x = x; this.y = y;
-        this.size = Math.random() * 4 + 1;
-        this.speedX = (Math.random() - 0.5) * 3;
-        this.speedY = (Math.random() - 0.5) * 3;
-        this.alpha = 1;
+    function animate() {
+        ctx.clearRect(0, 0, W, H);
+        particlesArray.forEach((p, i) => {
+            p.update(); p.draw();
+            if(p.alpha <= 0) { particlesArray.splice(i, 1); }
+        });
+        requestAnimationFrame(animate);
     }
-    update() { this.x += this.speedX; this.y += this.speedY; this.alpha -= 0.02; }
-    draw() { ctx.globalAlpha = this.alpha; ctx.fillStyle = '#f0c040'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+    animate();
 }
 
-function createParticle() { for(let i=0; i<2; i++) particlesArray.push(new Particle(mouse.x, mouse.y)); }
-
-function animate() {
-    ctx.clearRect(0, 0, W, H);
-    for(let i=0; i<particlesArray.length; i++) {
-        particlesArray[i].update();
-        particlesArray[i].draw();
-        if(particlesArray[i].alpha <= 0) { particlesArray.splice(i, 1); i--; }
+// === PRELOADER REMOVAL (IMPORTANT) ===
+window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    if(splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.display = 'none', 500);
     }
-    requestAnimationFrame(animate);
-}
-animate();
-
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        const splash = document.getElementById('splash-screen');
-        if(splash) splash.classList.add('splash-screen-hidden');
-    }, 3000);
 });
 </script>
 </body>
 </html>
+                
