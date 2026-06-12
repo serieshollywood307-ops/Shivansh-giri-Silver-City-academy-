@@ -1024,11 +1024,15 @@ if (canvas) {
     animate();
 }
 
-// 2. Preloader Hatane wala logic
+
+    // 2. Preloader Hatane wala logic (Force Remove)
 window.addEventListener('load', () => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
-        splash.style.display = 'none';
+        // Force hide
+        splash.style.setProperty('display', 'none', 'important');
+        splash.style.visibility = 'hidden';
     }
 });
+    
 </script>
