@@ -924,44 +924,7 @@ window.addEventListener('DOMContentLoaded', () => {
     <div class="cyber-chat-box" id="cyberAiBox">
         <div class="cyber-header">
             <div class="cyber-header-profile">
-                <div class="cyber-header-avatar">
-                    <img src="1000006803.webp" alt="AI Avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712035.png'">
-                </div>
-                <h5>Shivansh's AI Pro <span class="live-dot"></span></h5>
-            </div>
-            <span class="cyber-close" onclick="toggleCyberAI()">&times;</span>
-        </div>
-        <div class="cyber-body" id="cyberAiChatBody">
-            <div class="cyber-msg ai">Pranam! Main hoon Shivansh's AI Pro. Aapka ultra-smart dynamic companion. Ab main Text-Generation Engine se connected hoon, toh aap mujhse coding, mathematics, school admissions ya duniya ka koi bhi general sawal pooch sakte hain!</div>
-        </div>
-        <div class="cyber-input-area">
-            <input type="text" id="cyberAiInputField" placeholder="Ask me absolutely anything..." onkeypress="if(event.key === 'Enter') handleCyberRequest()" />
-            <button class="cyber-send" onclick="handleCyberRequest()">Send</button>
-        </div>
-    </div>
-</div>
 
-<script>
-    function toggleCyberAI() {
-        document.getElementById('cyberAiBox').classList.toggle('active');
-    }
-
-    async function handleCyberRequest() {
-        const inputField = document.getElementById('cyberAiInputField');
-        const chatBody = document.getElementById('cyberAiChatBody');
-        const query = inputField.value.trim();
-        
-        if (!query) return;
-
-        // User message UI mein insert karo
-        chatBody.innerHTML += `<div class="cyber-msg user">${query}</div>`;
-        inputField.value = '';
-        chatBody.scrollTop = chatBody.scrollHeight;
-
-        // Smart Loader Block
-        const loadId = 'sys-' + Date.now();
-        chatBody.innerHTML += `<div class="cyber-msg ai" id="${loadId}">Shivansh AI is thinking...</div>`;
-        chatBody.scrollTop = chatBody.scrollHeight;
 
 <!-- ==========================================
      UNIQUE FEATURE: CYBER HACKER MODE TOGGLE
