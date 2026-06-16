@@ -834,7 +834,287 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 3000); // 3 Seconds waiting time
 });
 </script>
+<style>
+    .smart-hub-container {
+        max-width: 1100px;
+        margin: 60px auto;
+        padding: 25px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(240, 192, 64, 0.15);
+        border-radius: 24px;
+        font-family: 'Inter', sans-serif;
+        color: #fff;
+    }
+    .hub-title {
+        font-family: 'Playfair Display', serif;
+        color: #f0c040;
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 10px;
+        text-shadow: 0 0 15px rgba(240,192,64,0.2);
+    }
+    .hub-subtitle {
+        text-align: center;
+        opacity: 0.7;
+        font-size: 14px;
+        margin-bottom: 35px;
+    }
+    .class-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+    }
+    .class-tab-btn {
+        background: #0d1321;
+        color: #fff;
+        border: 1px solid rgba(240,192,64,0.4);
+        padding: 10px 24px;
+        font-weight: 600;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+    .class-tab-btn.active-tab {
+        background: #f0c040;
+        color: #0a0e17;
+        box-shadow: 0 5px 15px rgba(240,192,64,0.3);
+    }
+    .subject-grid {
+        display: none;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .subject-grid.active-grid {
+        display: grid;
+    }
+    .sub-card {
+        background: #0d1321;
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        padding: 20px;
+        transition: 0.3s ease;
+    }
+    .sub-card:hover {
+        transform: translateY(-5px);
+        border-color: #f0c040;
+    }
+    .sub-card h4 {
+        margin: 0 0 15px 0;
+        font-size: 18px;
+        color: #f0c040;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .action-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .action-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+    .btn-books {
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-books:hover {
+        background: rgba(255,255,255,0.12);
+    }
+    .btn-notes {
+        background: linear-gradient(135deg, #f0c040, #d4942a);
+        color: #0a0e17;
+    }
+    .btn-notes:hover {
+        opacity: 0.9;
+        box-shadow: 0 4px 12px rgba(240,192,64,0.2);
+    }
 
+    /* ====== MASTER DEVELOPER ROLA SECTION ====== */
+    .creator-dossier {
+        margin-top: 60px;
+        background: linear-gradient(135deg, #0a0e17, #161f36);
+        border: 2px solid #f0c040;
+        border-radius: 20px;
+        padding: 30px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .creator-avatar-box {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid #f0c040;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(240,192,64,0.4);
+        flex-shrink: 0;
+    }
+    .creator-avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+    .creator-details h3 {
+        margin: 0 0 5px 0;
+        font-family: 'Playfair Display', serif;
+        font-size: 24px;
+        color: #f0c040;
+        letter-spacing: 0.5px;
+    }
+    .creator-tag {
+        font-size: 11px;
+        background: rgba(240,192,64,0.15);
+        color: #f0c040;
+        padding: 3px 10px;
+        border-radius: 30px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+    .creator-details p {
+        margin: 0;
+        font-size: 13.5px;
+        line-height: 1.6;
+        opacity: 0.85;
+    }
+    @media (max-width: 768px) {
+        .creator-dossier { flex-direction: column; text-align: center; padding: 20px; }
+    }
+</style>
+
+<div class="smart-hub-container">
+    <h3 class="hub-title">📚 NCERT Smart Study Node</h3>
+    <p class="hub-subtitle">Class 9th to 12th Official Textbooks, Solutions &amp; Exclusive Notes</p>
+
+    <div class="class-tabs">
+        <button class="class-tab-btn active-tab" onclick="switchClassGrid('c9', this)">Class 9</button>
+        <button class="class-tab-btn" onclick="switchClassGrid('c10', this)">Class 10</button>
+        <button class="class-tab-btn" onclick="switchClassGrid('c11', this)">Class 11</button>
+        <button class="class-tab-btn" onclick="switchClassGrid('c12', this)">Class 12</button>
+    </div>
+
+    <div id="grid-c9" class="subject-grid active-grid">
+        <div class="sub-card">
+            <h4>📐 Mathematics</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?iemh1=0-15" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+        <div class="sub-card">
+            <h4>🧪 Science</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?iesc1=0-15" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="grid-c10" class="subject-grid">
+        <div class="sub-card">
+            <h4>📐 Mathematics</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?jemh1=0-15" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+        <div class="sub-card">
+            <h4>🧪 Science</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?jesc1=0-16" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="grid-c11" class="subject-grid">
+        <div class="sub-card">
+            <h4>🧬 Biology</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?kebo1=0-22" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+        <div class="sub-card">
+            <h4>⚗️ Chemistry</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?kech1=0-9" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+        <div class="sub-card">
+            <h4>🧲 Physics</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?keph1=0-8" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="grid-c12" class="subject-grid">
+        <div class="sub-card">
+            <h4>🧬 Biology</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?lebo1=0-16" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+        <div class="sub-card">
+            <h4>⚗️ Chemistry</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?lech1=0-9" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+        <div class="sub-card">
+            <h4>🧲 Physics</h4>
+            <div class="action-links">
+                <a href="https://ncert.nic.in/textbook.php?leph1=0-14" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="creator-dossier">
+        <div class="creator-avatar-box">
+            <img src="1000006803.webp" alt="Shivansh Goswami" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+        </div>
+        <div class="creator-details">
+            <h3>Shivansh Goswami</h3>
+            <span class="creator-tag">CHIEF ARCHITECT &amp; SECURITY LEAD</span>
+            <p>Is advanced responsive multi-node digital ecosystem aur iske custom algorithms (Cyber Security Terminal Engine, Particle Mechanics Framework) ko independently built aur debug kiya gaya hai. Designed with precision to manage data pipelines, educational assets, aur high-performance digital automation tools.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchClassGrid(classId, btn) {
+        // Saare grids hide karo
+        document.querySelectorAll('.subject-grid').forEach(grid => {
+            grid.classList.remove('active-grid');
+        });
+        // Saare buttons se active class hatao
+        document.querySelectorAll('.class-tab-btn').forEach(b => {
+            b.classList.remove('active-tab');
+        });
+        
+        // Sahi wale ko show karo
+        document.getElementById('grid-' + classId).classList.add('active-grid');
+        btn.classList.add('active-tab');
+    }
+</script>
+             
 <!-- Footer Section -->
 <footer style="text-align: center; padding: 30px 20px; background-color: #0a0a17; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 50px;">
     <p style="font-family: 'Inter', sans-serif; color: #f0c040; font-size: 16px; letter-spacing: 1px; margin: 0;">
