@@ -970,6 +970,138 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 </script>
              
+   <!-- ==========================================
+     ULTIMATE 100/100 FEATURE: HIDDEN CYBER TERMINAL
+     ========================================== -->
+<style>
+    .hidden-terminal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 5, 2, 0.95);
+        z-index: 1000000;
+        display: none;
+        flex-direction: column;
+        font-family: 'Courier New', Courier, monospace;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .terminal-header {
+        color: #00ff66;
+        border-bottom: 1px solid #00ff66;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+    }
+    .terminal-close {
+        cursor: pointer;
+        color: #ff3333;
+        font-weight: bold;
+    }
+    .terminal-output {
+        flex: 1;
+        color: #00ff66;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    .terminal-input-line {
+        display: flex;
+        color: #00ff66;
+        align-items: center;
+        margin-top: 10px;
+    }
+    .terminal-prompt {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+    .terminal-input-line input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #00ff66;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+    }
+</style>
+
+<div class="hidden-terminal-overlay" id="cyberTerminal">
+    <div class="terminal-header">
+        <span>🖥️ ROOT@SHIVANSH_MAINFRAME:~</span>
+        <span class="terminal-close" onclick="closeTerminal()">[CLOSE_X]</span>
+    </div>
+    <div class="terminal-output" id="terminalOutput">SHIVANSH-OS v1.0.0 (BETA)
+Type 'help' to see available cyber commands.
+
+</div>
+    <div class="terminal-input-line">
+        <span class="terminal-prompt">guest@shivansh-net:~$</span>
+        <input type="text" id="terminalInput" autofocus onkeypress="if(event.key === 'Enter') executeCommand()" placeholder="Enter command..." />
+    </div>
+</div>
+
+<script>
+    // Secret Key Trigger: Type 'hack' anywhere on keyboard to unlock
+    let inputSequence = "";
+    document.addEventListener('keydown', (e) => {
+        inputSequence += e.key.toLowerCase();
+        if (inputSequence.length > 4) {
+            inputSequence = inputSequence.substring(inputSequence.length - 4);
+        }
+        if (inputSequence === "hack") {
+            openTerminal();
+        }
+    });
+
+    // Mobile backup trigger: Copy this link to let mobile users open it or double tap screen
+    document.addEventListener('dblclick', () => {
+        openTerminal(); // Mobile par double tap karne se terminal khulega
+    });
+
+    function openTerminal() {
+        document.getElementById('cyberTerminal').style.display = 'flex';
+        document.getElementById('terminalInput').focus();
+    }
+
+    function closeTerminal() {
+        document.getElementById('cyberTerminal').style.display = 'none';
+    }
+
+    function executeCommand() {
+        const inputEl = document.getElementById('terminalInput');
+        const outputEl = document.getElementById('terminalOutput');
+        const command = inputEl.value.trim().toLowerCase();
+        
+        if(!command) return;
+
+        outputEl.innerHTML += `\nguest@shivansh-net:~$ ${command}\n`;
+        
+        let reply = "";
+        if (command === 'help') {
+            reply = "Available Commands:\n - 'about'   : Show mastermind system creator details.\n - 'clear'   : Clear the terminal screen.\n - 'matrix'  : Initiate core security test.\n - 'help'    : Display this menu.";
+        } else if (command === 'about') {
+            reply = "SYSTEM CREATOR: Master Programmer Shivansh Goswami.\nSTATUS        : Cybersecurity Engineer & Full-Stack Architect.\nPROJECT       : Silver City Academy Advanced Web Node.";
+        } else if (command === 'matrix') {
+            reply = "SYSTEM WARNING: ACCESSING SECURITY NETWORK...\n[||||||||||||||||||||] 100% DONE.\nALL SYSTEMS STABLE. ZERO EXPLOITS FOUND.";
+        } else if (command === 'clear') {
+            outputEl.innerHTML = "";
+            inputEl.value = "";
+            return;
+        } else {
+            reply = `bash: command not found: ${command}. Type 'help' for options.`;
+        }
+
+        outputEl.innerHTML += reply + "\n";
+        inputEl.value = "";
+        outputEl.scrollTop = outputEl.scrollHeight;
+    }
+</script>
              
 </body>
             </html>
