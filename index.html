@@ -963,53 +963,132 @@ window.addEventListener('DOMContentLoaded', () => {
         chatBody.innerHTML += `<div class="cyber-msg ai" id="${loadId}">Shivansh AI is thinking...</div>`;
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        const text = query.toLowerCase();
-
-        // 1. Direct Local Optimization (School context answers fast)
-        if (text.includes('admission') || text.includes('dakhila') || text.includes('apply')) {
-            setTimeout(() => {
-                document.getElementById(loadId).innerHTML = "Silver City Academy mein session 2026-27 ke admissions successfully open hain! Aap Pre-Nursery se lekar Class XII tak ke liye direct application submit kar sakte hain.";
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 300);
-            return;
-        }
-        if (text.includes('owner') || text.includes('banaya') || text.includes('creator') || text.includes('shivansh')) {
-            setTimeout(() => {
-                document.getElementById(loadId).innerHTML = "Mujhe aur is website ke advance components ko master programmer <strong>Shivansh Goswami</strong> ne design aur codes ke sath build kiya hai!";
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 300);
-            return;
-        }
-
-        // 2. High-Performance Text Generator Pipeline (Real Intelligence for any general questions)
-        try {
-            // Text-generation open endpoint pipeline for handling unlimited general questions safely
-            const apiRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(query)}`).then(res => res.json()).catch(() => null);
-            
-            let aiResponseText = "";
-            if (apiRes && apiRes[0] && apiRes[0].meanings && apiRes[0].meanings[0].definitions[0]) {
-                aiResponseText = `According to database analysis: <strong>${apiRes[0].meanings[0].definitions[0].definition}</strong>`;
-            }
-
-            // Agar directly dictionary matrix match na ho, toh dynamic search fetch karega
-            if (!aiResponseText) {
-                const searchRes = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`);
-                const searchData = await searchRes.json();
-                aiResponseText = searchData.AbstractText || (searchData.RelatedTopics && searchData.RelatedTopics[0] ? searchData.RelatedTopics[0].Text : null);
-            }
-
-            // Ultimate fallback solution text
-            if (!aiResponseText) {
-                aiResponseText = `Sawal ekdum top-level ka hai bhai! Is logical computational request ko solve karne ke liye aap mere creator Shivansh se directly context link par contact kar sakte hain, ya ek baar question ko thode simple shabdon mein poochiye!`;
-            }
-
-            document.getElementById(loadId).innerHTML = aiResponseText;
-        } catch (e) {
-            document.getElementById(loadId).innerHTML = "System update ho raha hai bhai, ek baar fir se question enter kijiye!";
-        }
-        chatBody.scrollTop = chatBody.scrollHeight;
+<!-- ==========================================
+     UNIQUE FEATURE: CYBER HACKER MODE TOGGLE
+     ========================================== -->
+<style>
+    /* Floating Cyber Toggle Button */
+    .cyber-toggle-wrapper {
+        position: fixed;
+        bottom: 25px;
+        left: 25px; /* Left side rakha h taaki right side khali rahe */
+        z-index: 999999;
     }
+    .cyber-toggle-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #0a0e17;
+        border: 2px solid #f0c040;
+        box-shadow: 0 0 20px rgba(240,192,64,0.4);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .cyber-toggle-btn img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .cyber-toggle-btn:hover {
+        transform: scale(1.1) rotate(-10deg);
+        box-shadow: 0 0 30px #00ff66;
+        border-color: #00ff66;
+    }
+
+    /* ====== HACKER MODE ACTIVE STYLES ====== */
+    body.hacker-mode-active {
+        background-color: #000000 !important;
+        color: #00ff66 !important;
+        font-family: 'Courier New', Courier, monospace !important;
+    }
+    body.hacker-mode-active div, 
+    body.hacker-mode-active section, 
+    body.hacker-mode-active p, 
+    body.hacker-mode-active h1, 
+    body.hacker-mode-active h2, 
+    body.hacker-mode-active h3 {
+        background-color: rgba(0, 0, 0, 0.9) !important;
+        color: #00ff66 !important;
+        border-color: #00ff66 !important;
+        text-shadow: 0 0 8px rgba(0, 255, 102, 0.6) !important;
+    }
+    body.hacker-mode-active footer {
+        background: #000 !important;
+        border-top: 1px solid #00ff66 !important;
+    }
+    body.hacker-mode-active footer span,
+    body.hacker-mode-active footer p {
+        color: #00ff66 !important;
+    }
+
+    /* Screen Matrix Trailing Effect Particle */
+    .matrix-particle {
+        position: fixed;
+        pointer-events: none;
+        color: #00ff66;
+        font-family: monospace;
+        font-size: 14px;
+        font-weight: bold;
+        text-shadow: 0 0 5px #00ff66;
+        z-index: 9999999;
+        animation: fadeOutMatrix 0.8s ease-out forwards;
+    }
+    @keyframes fadeOutMatrix {
+        0% { opacity: 1; transform: translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateY(30px) scale(0.8); }
+    }
+</style>
+
+<div class="cyber-toggle-wrapper">
+    <!-- Trigger Button using your logo -->
+    <button class="cyber-toggle-btn" onclick="toggleHackerMode()" title="Toggle Cyber Hacker Mode">
+        <img src="1000006803.webp" alt="Cyber Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/7228/7228651.png'">
+    </button>
+</div>
+
+<script>
+    function toggleHackerMode() {
+        // Body par class toggle karega
+        document.body.classList.toggle('hacker-mode-active');
+        
+        // Alert notification style in console/screen
+        if(document.body.classList.contains('hacker-mode-active')) {
+            console.log("SYSTEM COMPROMISED: Shivansh Cyber Shield Active.");
+            alert("⚠️ SYSTEM OVERRIDE: Cyber Hacker Mode Activated!");
+        } else {
+            console.log("SYSTEM RESTORED: Normal Theme Active.");
+        }
+    }
+
+    // Interactive Tap/Click trailing effect when Hacker Mode is Active
+    document.addEventListener('click', function(e) {
+        if (!document.body.classList.contains('hacker-mode-active')) return;
+
+        // 0 ya 1 me se random character chunega
+        const chars = ['0', '1', '$', 'X', 'SYS'];
+        const randomChar = chars[Math.floor(Math.random() * chars.length)];
+
+        const particle = document.createElement('div');
+        particle.className = 'matrix-particle';
+        particle.innerText = randomChar;
+        
+        // Clicks ke coordinates par spawn karega
+        particle.style.left = (e.clientX - 5) + 'px';
+        particle.style.top = (e.clientY - 10) + 'px';
+
+        document.body.appendChild(particle);
+
+        // 800ms baad particle remove ho jayega
+        setTimeout(() => {
+            particle.remove();
+        }, 800);
+    });
 </script>
+             
              
 </body>
             </html>
