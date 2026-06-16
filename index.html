@@ -931,75 +931,201 @@ window.addEventListener('DOMContentLoaded', () => {
         border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px;
     }
     
-    @keyframes aiPop { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+<style>
+    .shivansh-cyber-ai {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 999999;
+        font-family: 'Inter', sans-serif;
+    }
+    /* Floating Button with User's Custom Logo Style */
+    .ai-cyber-trigger {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        background: #0a0e17;
+        border: 2px solid #f0c040;
+        box-shadow: 0 0 25px rgba(240,192,64,0.4);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .ai-cyber-trigger img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .ai-cyber-trigger:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 0 35px rgba(240,192,64,0.6);
+    }
+    /* Smart Chat Box Window */
+    .cyber-chat-box {
+        position: fixed;
+        bottom: 105px;
+        right: 25px;
+        width: 360px;
+        height: 500px;
+        background: #0d1321;
+        border: 1px solid rgba(240,192,64,0.3);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        animation: cyberAiPop 0.3s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+    }
+    .cyber-chat-box.active { display: flex; }
+    
+    .cyber-header {
+        background: linear-gradient(135deg, #0d1321, #161f36);
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(240,192,64,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .cyber-header-profile { display: flex; align-items: center; gap: 10px; }
+    .cyber-header-avatar {
+        width: 35px; height: 35px; border-radius: 50%; border: 1px solid #f0c040; overflow: hidden;
+    }
+    .cyber-header-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .cyber-header h5 {
+        margin: 0; font-family: 'Playfair Display', serif;
+        font-size: 16px; color: #f0c040; display: flex; align-items: center; gap: 6px;
+    }
+    .cyber-header .live-dot {
+        width: 7px; height: 7px; background: #00ff66; border-radius: 50%;
+        display: inline-block; box-shadow: 0 0 10px #00ff66; animation: aiPulse 1.5s infinite;
+    }
+    .cyber-close { color: rgba(255,255,255,0.4); cursor: pointer; font-size: 22px; transition: 0.3s; }
+    .cyber-close:hover { color: #f0c040; }
+    
+    .cyber-body {
+        flex: 1; padding: 18px; overflow-y: auto;
+        display: flex; flex-direction: column; gap: 14px;
+        background: radial-gradient(circle at bottom right, rgba(240,192,64,0.02), transparent);
+    }
+    .cyber-msg { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; }
+    .cyber-msg.ai { background: rgba(255,255,255,0.04); color: #e0e0e6; align-self: flex-start; border-left: 3px solid #f0c040; border-top-left-radius: 4px; }
+    .cyber-msg.user { background: linear-gradient(135deg, #f0c040, #d4942a); color: #0a0e17; align-self: flex-end; font-weight: 500; border-bottom-right-radius: 4px; }
+    
+    .cyber-input-area {
+        padding: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+        display: flex; gap: 10px; background: #0a0e17;
+    }
+    .cyber-input-area input {
+        flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px; padding: 12px 16px; color: #fff; font-size: 13.5px; outline: none; transition: 0.3s;
+    }
+    .cyber-input-area input:focus { border-color: #f0c040; background: rgba(255,255,255,0.05); }
+    .cyber-send {
+        background: #f0c040; color: #0a0e17; border: none; padding: 0 20px;
+        border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 13.5px; transition: 0.3s;
+    }
+    .cyber-send:hover { background: #d4942a; }
+    
+    @keyframes cyberAiPop { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes aiPulse { 0% { transform: scale(0.9); opacity: 0.6; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.9); opacity: 0.6; } }
 </style>
 
-<div class="shivansh-ai-container">
-    <!-- Floating Button -->
-    <button class="ai-fab" onclick="toggleShivanshAI()" title="Ask Shivansh AI">🤖</button>
+<div class="shivansh-cyber-ai">
+    <button class="ai-cyber-trigger" onclick="toggleCyberAI()">
+        <img src="1000006803.webp" alt="Shivansh AI Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712035.png'">
+    </button>
     
-    <!-- Chat Window -->
-    <div class="ai-chat-window" id="shivanshAiWindow">
-        <div class="ai-header">
-            <h5>🤖 Shivansh AI <span class="status-dot"></span></h5>
-            <span class="ai-close" onclick="toggleShivanshAI()">&times;</span>
+    <div class="cyber-chat-box" id="cyberAiBox">
+        <div class="cyber-header">
+            <div class="cyber-header-profile">
+                <div class="cyber-header-avatar">
+                    <img src="1000006803.webp" alt="AI Avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/4712/4712035.png'">
+                </div>
+                <h5>Shivansh AI Pro <span class="live-dot"></span></h5>
+            </div>
+            <span class="cyber-close" onclick="toggleCyberAI()">&times;</span>
         </div>
-        <div class="ai-messages" id="aiMessageArea">
-            <div class="msg bot">Pranam! Main hoon Shivansh AI. Main is Academy aur har tarah ke general sawalon ka jawab de sakta hoon. Puchiye kya puchna hai?</div>
+        <div class="cyber-body" id="cyberAiChatBody">
+            <div class="cyber-msg ai">Pranam! Main hoon Shivansh AI Pro. Aapka hyper-smart companion. Main is website, Silver City Academy aur duniya ke kisi bhi general topic par mere creator ki tarah smart jawab de sakta hoon. Puchiye kya janna hai?</div>
         </div>
-        <div class="ai-input-area">
-            <input type="text" id="aiInputField" placeholder="Type your question here..." onkeypress="if(event.key === 'Enter') sendAiMessage()" />
-            <button class="ai-send-btn" onclick="sendAiMessage()">Send</button>
+        <div class="cyber-input-area">
+            <input type="text" id="cyberAiInputField" placeholder="Ask me anything..." onkeypress="if(event.key === 'Enter') handleCyberRequest()" />
+            <button class="cyber-send" onclick="handleCyberRequest()">Send</button>
         </div>
     </div>
 </div>
 
 <script>
-    function toggleShivanshAI() {
-        document.getElementById('shivanshAiWindow').classList.toggle('active');
+    function toggleCyberAI() {
+        document.getElementById('cyberAiBox').classList.toggle('active');
     }
 
-    async function sendAiMessage() {
-        const inputField = document.getElementById('aiInputField');
-        const messageArea = document.getElementById('aiMessageArea');
+    async function handleCyberRequest() {
+        const inputField = document.getElementById('cyberAiInputField');
+        const chatBody = document.getElementById('cyberAiChatBody');
         const query = inputField.value.trim();
         
         if (!query) return;
 
-        // User message screen par add karo
-        messageArea.innerHTML += `<div class="msg user">${query}</div>`;
+        // User message layout append karo
+        chatBody.innerHTML += `<div class="cyber-msg user">${query}</div>`;
         inputField.value = '';
-        messageArea.scrollTop = messageArea.scrollHeight;
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Typing indicator dikhao
-        const typingId = 'typing-' + Date.now();
-        messageArea.innerHTML += `<div class="msg bot" id="${typingId}">Shivansh AI is thinking...</div>`;
-        messageArea.scrollTop = messageArea.scrollHeight;
+        // Smart Loader Block
+        const loadId = 'sys-' + Date.now();
+        chatBody.innerHTML += `<div class="cyber-msg ai" id="${loadId}">Analyzing request...</div>`;
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-        try {
-            // Kuch free aur reliable serverless APIs public parsing ke liye
-            // Isme duckduckgo ya free chatbot pipeline ka use kiya hai jisse har cheez ka reply aaye
-            const response = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`);
-            const data = await response.json();
-            
-            let reply = data.AbstractText;
-            
-            if (!reply && data.RelatedTopics && data.RelatedTopics.length > 0) {
-                reply = data.RelatedTopics[0].Text;
-            }
-            
-            if (!reply) {
-                // Agar precise answer na mile toh intelligently handle karega
-                reply = `Main iska bilkul perfect jawab dhoondh raha hoon! Lekin tab tak ke liye, agar aapko Silver City Academy ke admissions, transport ya fees ke baare me janna hai, toh aap neeche diye gaye Form ko fill kar sakte hain ya directly contact page par jaa sakte hain!`;
-            }
+        // 1. Direct Local Rules (School Information Intelligently Handled)
+        const text = query.toLowerCase();
+        let answers = "";
 
-            document.getElementById(typingId).innerText = reply;
-        } catch (error) {
-            document.getElementById(typingId).innerText = "Sorry bhai, network thoda slow hai. Ek baar fir se try karna!";
+        if (text.includes('admission') || text.includes('dakhila') || text.includes('apply')) {
+            answers = "Silver City Academy me academic session 2026-27 ke liye admissions open ho chuke hain. Aap Pre-Nursery se XII tak apply kar sakte hain. Form fill karne ke liye hamare main Admission Box par jaakar apply karein.";
+        } else if (text.includes('facility') || text.includes('labs') || text.includes('computer') || text.includes('library')) {
+            answers = "School me world-class infrastructure hai—hi-tech computer labs, modern science labs aur ek premium resource library bacchon ke liye available h.";
+        } else if (text.includes('owner') || text.includes('banaya') || text.includes('creator') || text.includes('shivansh')) {
+            answers = "Mujhe aur is puri responsive dynamic website ko **Shivansh Goswami** ne develop kiya hai. He is the master mind behind this code!";
+        } else if (text.includes('contact') || text.includes('number') || text.includes('phone')) {
+            answers = "Aap direct admin team se **+91-7408258037** par contact kar sakte hain ya Bankeyganj Road campus visit kar sakte hain.";
+        } else if (text.includes('hello') || text.includes('hi') || text.includes('kaise ho')) {
+            answers = "Hello! Main ekdum behtareen hoon. Aap bataiye aaj computer science, coding ya school admission se judi kya help chahiye?";
         }
-        messageArea.scrollTop = messageArea.scrollHeight;
+
+        if (answers) {
+            setTimeout(() => {
+                document.getElementById(loadId).innerHTML = answers;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 500);
+            return;
+        }
+
+        // 2. Global Smart Query Resolution (Real Online Search Model Engine)
+        try {
+            const apiRes = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`);
+            const data = await apiRes.json();
+            let finalText = data.AbstractText;
+
+            if (!finalText && data.RelatedTopics && data.RelatedTopics.length > 0) {
+                finalText = data.RelatedTopics[0].Text;
+            }
+
+            if (!finalText) {
+                finalText = "Sawal dilchasp hai! Iska bilkul exact engineering calculation nikalne ke liye aap direct administration office me contact kar sakte hain ya mujhe ek baar aur clear shabdon me bataiye.";
+            }
+
+            document.getElementById(loadId).innerHTML = finalText;
+        } catch (e) {
+            document.getElementById(loadId).innerHTML = "Thoda connectivity lag hai bhai! Ek baar dobara se type karke bhejiye.";
+        }
+        chatBody.scrollTop = chatBody.scrollHeight;
     }
-                </script>
+</script>
+             
              
              
 </body>
