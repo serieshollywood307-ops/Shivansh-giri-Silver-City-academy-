@@ -1102,6 +1102,210 @@ Type 'help' to see available cyber commands.
         outputEl.scrollTop = outputEl.scrollHeight;
     }
 </script>
+     <style>
+    .physics-toggle-wrapper {
+        position: fixed;
+        bottom: 165px;
+        left: 25px; /* Purane buttons ke upar cleanly stack ho jayega */
+        z-index: 999999;
+    }
+    .physics-btn {
+        background: linear-gradient(135deg, #ff007f, #7928ca);
+        color: #fff;
+        border: 2px solid #fff;
+        padding: 12px 18px;
+        border-radius: 30px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(235, 0, 127, 0.4);
+        font-size: 11px;
+        letter-spacing: 1px;
+        transition: 0.3s ease;
+    }
+    .physics-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(121, 40, 202, 0.6);
+    }
+    /* Dynamic class for falling objects */
+    .physics-element {
+        position: fixed !important;
+        transition: none !important;
+        z-index: 1000005 !important;
+        cursor: grab !important;
+        user-select: none !important;
+        touch-action: none !important;
+    }
+    .physics-element:active { cursor: grabbing !important; }
+</style>
+
+<div class="physics-toggle-wrapper">
+    <button class="physics-btn" onclick="toggleWebsiteReality()" id="physicsBtn">✨ TOGGLE REALITY</button>
+</div>
+
+<script>
+    let physicsActive = false;
+    let elements = [];
+    let animationFrameId = null;
+    const gravity = 0.4;
+    const bounce = 0.72;
+
+    function toggleWebsiteReality() {
+        physicsActive = !physicsActive;
+        const btn = document.getElementById('physicsBtn');
+        
+        if (physicsActive) {
+            btn.innerHTML = "🌀 RESTORE REALITY";
+            btn.style.background = "linear-gradient(135deg, #00dfd8, #007cf0)";
+            initPhysics();
+        } else {
+            btn.innerHTML = "✨ TOGGLE REALITY";
+            btn.style.background = "linear-gradient(135deg, #ff007f, #7928ca)";
+            stopPhysics();
+        }
+    }
+
+    function initPhysics() {
+        // Target high-value cool elements to break (like cards, headers, logos)
+        const targets = document.querySelectorAll('h1, h2, footer, .ai-cyber-trigger, .cyber-toggle-btn');
+        elements = [];
+
+        targets.forEach((el, index) => {
+            if (el.id === 'physicsBtn') return;
+            
+            const rect = el.getBoundingClientRect();
+            
+            // Save original styles to restore later
+            el.dataset.origStyle = el.style.cssText || "";
+            el.dataset.origX = rect.left;
+            el.dataset.origY = rect.top;
+
+            // Apply physical body attributes
+            const body = {
+                target: el,
+                x: rect.left,
+                y: rect.top,
+                w: rect.width,
+                h: rect.height,
+                vx: (Math.random() - 0.5) * 8,
+                vy: (Math.random() - 2) * 5,
+                isDragged: false
+            };
+
+            el.classList.add('physics-element');
+            el.style.width = body.w + 'px';
+            el.style.height = body.h + 'px';
+            
+            // Add Drag and Drop mechanics for touch/mouse
+            setupDragEvents(el, body);
+            elements.push(body);
+        });
+
+        updatePhysics();
+    }
+
+    function updatePhysics() {
+        if (!physicsActive) return;
+
+        const screenW = window.innerWidth;
+        const screenH = window.innerHeight;
+
+        elements.forEach(body => {
+            if (body.isDragged) return;
+
+            // Apply gravity
+            body.vy += gravity;
+            
+            // Apply velocities
+            body.x += body.vx;
+            body.y += body.vy;
+
+            // Floor collision
+            if (body.y + body.h > screenH) {
+                body.y = screenH - body.h;
+                body.vy = -body.vy * bounce;
+                body.vx *= 0.95; // Friction
+            }
+            // Ceiling collision
+            if (body.y < 0) {
+                body.y = 0;
+                body.vy = -body.vy * bounce;
+            }
+            // Right wall collision
+            if (body.x + body.w > screenW) {
+                body.x = screenW - body.w;
+                body.vx = -body.vx * bounce;
+            }
+            // Left wall collision
+            if (body.x < 0) {
+                body.x = 0;
+                body.vx = -body.vx * bounce;
+            }
+
+            // Sync HTML visual placement
+            body.target.style.left = body.x + 'px';
+            body.target.style.top = body.y + 'px';
+        });
+
+        animationFrameId = requestAnimationFrame(updatePhysics);
+    }
+
+    function setupDragEvents(el, body) {
+        let startX, startY;
+
+        function dragStart(e) {
+            body.isDragged = true;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            startX = clientX - body.x;
+            startY = clientY - body.y;
+            window.addEventListener('mousemove', dragMove, { passive: false });
+            window.addEventListener('touchmove', dragMove, { passive: false });
+            window.addEventListener('mouseup', dragEnd);
+            window.addEventListener('touchend', dragEnd);
+        }
+
+        function dragMove(e) {
+            if (!body.isDragged) return;
+            e.preventDefault();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            const nextX = clientX - startX;
+            const nextY = clientY - startY;
+
+            body.vx = (nextX - body.x) * 0.4;
+            body.vy = (nextY - body.y) * 0.4;
+
+            body.x = nextX;
+            body.y = nextY;
+
+            body.target.style.left = body.x + 'px';
+            body.target.style.top = body.y + 'px';
+        }
+
+        function dragEnd() {
+            body.isDragged = false;
+            window.removeEventListener('mousemove', dragMove);
+            window.removeEventListener('touchmove', dragMove);
+            window.removeEventListener('mouseup', dragEnd);
+            window.removeEventListener('touchend', dragEnd);
+        }
+
+        el.addEventListener('mousedown', dragStart);
+        el.addEventListener('touchstart', dragStart, { passive: true });
+    }
+
+    function stopPhysics() {
+        cancelAnimationFrame(animationFrameId);
+        elements.forEach(body => {
+            // Restore everything perfectly to its native layouts
+            body.target.classList.remove('physics-element');
+            body.target.style.cssText = body.target.dataset.origStyle;
+        });
+        elements = [];
+    }
+</script>
              
 </body>
             </html>
