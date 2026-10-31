@@ -1714,6 +1714,46 @@ Type 'help' to see available cyber commands.
         box-shadow: 0 12px 30px rgba(0, 242, 254, 0.6);
     }
 
+    /* Keep the three floating actions aligned and clear of the mobile footer. */
+    @media (max-width: 768px) {
+        .cyber-toggle-wrapper,
+        .physics-toggle-wrapper,
+        .mood-trigger-wrapper,
+        .scroll-indicator {
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+        .cyber-toggle-wrapper {
+            left: 16px;
+            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        }
+        .cyber-toggle-btn { width: 52px; height: 52px; }
+        .physics-toggle-wrapper {
+            left: 16px;
+            bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+        }
+        .mood-trigger-wrapper {
+            left: 16px;
+            bottom: calc(132px + env(safe-area-inset-bottom, 0px));
+        }
+        .physics-btn, .mood-btn {
+            min-height: 44px;
+            padding: 10px 14px;
+        }
+        body.footer-tools-hidden .cyber-toggle-wrapper,
+        body.footer-tools-hidden .physics-toggle-wrapper,
+        body.footer-tools-hidden .mood-trigger-wrapper {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        body.footer-tools-hidden .scroll-indicator {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            animation: none;
+        }
+    }
+
     /* Mood Selector Overlay Modal */
     .mood-modal-overlay {
         position: fixed;
@@ -1902,6 +1942,31 @@ Type 'help' to see available cyber commands.
         // Modal ko close karo smoothly
         closeMoodModal();
     }
+
+    // Hide floating controls while either footer is visible on mobile.
+    const footerToolsMedia = window.matchMedia('(max-width: 768px)');
+    const footers = Array.from(document.querySelectorAll('footer'));
+    function updateFooterToolsVisibility() {
+        const footerVisible = footers.some(footer => {
+            const rect = footer.getBoundingClientRect();
+            return rect.top < window.innerHeight && rect.bottom > 0;
+        });
+        document.body.classList.toggle(
+            'footer-tools-hidden',
+            footerToolsMedia.matches && footerVisible
+        );
+    }
+    const footerToolsObserver = new IntersectionObserver(updateFooterToolsVisibility, {
+        threshold: 0
+    });
+    footers.forEach(footer => footerToolsObserver.observe(footer));
+    window.addEventListener('resize', updateFooterToolsVisibility, { passive: true });
+    if (footerToolsMedia.addEventListener) {
+        footerToolsMedia.addEventListener('change', updateFooterToolsVisibility);
+    } else {
+        footerToolsMedia.addListener(updateFooterToolsVisibility);
+    }
+    updateFooterToolsVisibility();
 
 </script>
              
