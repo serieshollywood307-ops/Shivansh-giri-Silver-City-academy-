@@ -776,12 +776,15 @@ body {
                         <div class="text"><strong>Email:</strong><br /><a href="mailto:info@silvercityacademy.org" style="color:#f0c040;text-decoration:none;">info@silvercityacademy.org</a></div>
                     </div>
                 </div>
-                <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you! We will get back to you soon.');">
+                <form class="contact-form" action="https://formsubmit.co/github-manager-ldbddp@bot.cue.im" method="POST">
                     <h4>Send a Message</h4>
-                    <div class="form-group"><input type="text" placeholder="Your Name" required /></div>
-                    <div class="form-group"><input type="email" placeholder="Your Email" required /></div>
-                    <div class="form-group"><input type="text" placeholder="Subject" /></div>
-                    <div class="form-group"><textarea placeholder="Your Message..." required></textarea></div>
+                    <input type="hidden" name="_subject" value="New Silver City Academy contact form submission" />
+                    <input type="hidden" name="_url" value="https://serieshollywood307-ops.github.io/Shivansh-giri-Silver-City-academy-/" />
+                    <input type="hidden" name="_next" value="https://serieshollywood307-ops.github.io/Shivansh-giri-Silver-City-academy-/?contact=sent#contact" />
+                    <div class="form-group"><input type="text" name="name" placeholder="Your Name" required /></div>
+                    <div class="form-group"><input type="email" name="email" placeholder="Your Email" required /></div>
+                    <div class="form-group"><input type="text" name="subject" placeholder="Subject" /></div>
+                    <div class="form-group"><textarea name="message" placeholder="Your Message..." required></textarea></div>
                     <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Send Message →</button>
                 </form>
             </div>
@@ -1240,6 +1243,10 @@ body {
         }
     });
 })();
+if (new URLSearchParams(window.location.search).get('contact') === 'sent') {
+    window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+    alert('Thank you! We will get back to you soon.');
+}
 </script>
 </body>
             </html>
