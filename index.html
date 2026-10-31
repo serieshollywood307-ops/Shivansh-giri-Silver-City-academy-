@@ -47,9 +47,9 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: #0a0e17;
+    background-color: var(--page, #e8ebef);
     z-index: 99999;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -62,7 +62,7 @@
 .splash-text {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
-    color: #f0c040;
+    color: var(--accent, #566f82);
     margin-bottom: 20px;
     letter-spacing: 2px;
     opacity: 0;
@@ -73,7 +73,7 @@
 .splash-loader {
     width: 50px;
     height: 3px;
-    background: linear-gradient(135deg, #f0c040, #d4942a);
+    background: linear-gradient(135deg, var(--accent, #566f82), var(--accent-dark, #405667));
     margin: 0 auto;
     border-radius: 2px;
     animation: scaleWidth 1.5s ease-in-out infinite alternate;
@@ -93,6 +93,7 @@
     visibility: hidden; 
     pointer-events: none; 
 }
+body.morphism-loading #splash-screen { display: flex; }
     }
         
         *,
@@ -522,6 +523,29 @@ body {
     </style>
 </head>
 <body data-theme="clay">
+    <div id="splash-screen" aria-hidden="true">
+        <div class="splash-content">
+            <h1 class="splash-text">Created by Shivansh Goswami</h1>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+    <script>
+    (() => {
+        const body = document.body;
+        let preloaderTimeout;
+        window.showMorphismPreloader = () => {
+            body.classList.add('morphism-loading');
+            window.clearTimeout(preloaderTimeout);
+            preloaderTimeout = window.setTimeout(() => body.classList.remove('morphism-loading'), 3000);
+        };
+        try {
+            if (localStorage.getItem('silver-city-academy-theme') === 'morphism') {
+                body.dataset.theme = 'morphism';
+                window.showMorphismPreloader();
+            }
+        } catch (_) {}
+    })();
+    </script>
     <!-- NAV -->
     <nav id="navbar">
         <a href="#home" class="nav-logo">
@@ -1300,6 +1324,8 @@ Type 'help' to see available cyber commands.
         choices.forEach(choice => choice.setAttribute('aria-checked', String(choice.dataset.themeChoice === name)));
         if (persist) {
             try { localStorage.setItem('silver-city-academy-theme', name); } catch (_) {}
+            if (name === 'morphism') window.showMorphismPreloader();
+            else body.classList.remove('morphism-loading');
         }
     }
     function closeMenu(returnFocus = false) {

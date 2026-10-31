@@ -197,7 +197,7 @@ body {
   line-height: 1.65;
   transition: background-color .2s ease, color .2s ease;
 }
-#starfield, .scroll-indicator, #splash-screen { display: none !important; }
+#starfield, .scroll-indicator { display: none !important; }
 ::selection { background: var(--accent-soft); color: var(--ink); }
 a { color: var(--accent); }
 
@@ -522,7 +522,7 @@ body[data-theme="sunrise"] .hero { background: radial-gradient(ellipse at 5% 0%,
 @media (max-width: 768px) {
   nav#navbar { gap: 8px; }
   .nav-logo span { max-width: 132px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  .theme-picker { width: auto; flex: 0 0 auto; position: relative; z-index: 1004; }
+  .theme-picker { width: auto; flex: 0 0 auto; position: static; z-index: 1004; }
   .theme-toggle { width: auto; min-width: 96px; gap: 5px; padding: 6px 8px; font-size: 10px; }
   .theme-toggle .theme-current { max-width: 88px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 10px; }
   .nav-links {
@@ -530,7 +530,7 @@ body[data-theme="sunrise"] .hero { background: radial-gradient(ellipse at 5% 0%,
     clip-path: inset(0 0 0 100%); visibility: hidden; transition: clip-path .22s ease, visibility .22s ease;
   }
   .nav-links.open { right: 0; clip-path: inset(0); visibility: visible; }
-  .theme-menu { position: absolute; top: calc(100% + 8px); right: 0; width: min(364px, calc(100vw - 24px)); margin-top: 0; z-index: 1005; }
+  .theme-menu { position: fixed; top: 66px; left: 50%; right: auto; transform: translateX(-50%); width: min(364px, calc(100vw - 24px)); margin-top: 0; z-index: 1005; }
 }
 html { overflow-x: clip; }
 
