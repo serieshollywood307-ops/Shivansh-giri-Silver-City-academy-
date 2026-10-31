@@ -13,5 +13,5 @@ A clean, responsive, and modern static website built for school management/infor
 - JavaScript (if any)
 
 ## 🔗 Live Demo
-[Click here to view the website](Tumhara-GitHub-Pages-Link)
+[Click here to view the website](https://serieshollywood307-ops.github.io/Shivansh-giri-Silver-City-academy-/)
 

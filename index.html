@@ -22,14 +22,14 @@
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "Silver City Academy",
-  "url": "https://serieshollywood307-ops.github.io/",
+  "url": "https://serieshollywood307-ops.github.io/Shivansh-giri-Silver-City-academy-/",
   "publisher": {
     "@type": "Organization",
     "name": "Silver City Academy",
     "alternateName": "Silver City Academy Gola kheri",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://serieshollywood307-ops.github.io/1000008534.png"
+      "url": "https://serieshollywood307-ops.github.io/Shivansh-giri-Silver-City-academy-/1000008534.png"
     }
   }
 }
@@ -108,7 +108,7 @@ html { scroll-behavior: smooth; }
     </div>
 </div>
 <!-- ==========================================
-     TOP-PAGE EXCLUSIVE: ADVANCED DYNAMIC IQ & AGE MATRIX
+     THREE-QUESTION LOGIC PUZZLE
      ========================================== -->
 <style>
     .smart-iq-box {
@@ -206,39 +206,29 @@ html { scroll-behavior: smooth; }
         margin: 15px 0;
         font-family: 'Courier New', monospace;
     }
-    .iq-result-frame { display: none; line-white: pre-line; line-height: 1.6; }
+    .iq-result-frame { display: none; white-space: pre-line; line-height: 1.6; }
 </style>
 
 <div class="smart-iq-box" id="iqCoreNode">
     <!-- Screen 1: Welcome -->
     <div id="iqWelcomeScreen" style="text-align: center;">
-        <h2>🧠 CHECK YOUR IQ</h2>
-        <p style="font-size: 13px; color: #888; margin: 10px 0 25px 0;">Adaptive Cognitive Diagnostics Engine v5.1</p>
-        <button class="iq-start-btn" onclick="initiateIQDiagnostics()">⚡ INITIATE CORE SCAN</button>
+        <h2>Three-question logic quiz</h2>
+        <p style="font-size: 13px; color: #888; margin: 10px 0 25px 0;">A short puzzle game for fun—not an IQ or cognitive assessment.</p>
+        <button class="iq-start-btn" type="button" onclick="initiateIQDiagnostics()">Start the puzzle</button>
     </div>
 
     <!-- Screen 2: Questions -->
     <div class="iq-q-block" id="iqQuestionScreen">
         <div class="iq-status-bar">
-            <span id="iqProgressTxt">NODE: 1/3</span>
+            <span id="iqProgressTxt" aria-live="polite">Question 1 of 3</span>
             <span id="iqLevelBadge" class="level-badge lvl-normal">NORMAL</span>
         </div>
-        <div id="iqQuestionText" style="font-size: 16px; color:#fff; font-weight:bold; margin-bottom:20px;"></div>
+        <div id="iqQuestionText" style="font-size: 16px; color:#fff; font-weight:bold; margin-bottom:20px;" aria-live="polite"></div>
         <div id="iqOptionsBox"></div>
     </div>
 
-    <!-- Screen 3: Age Request -->
-    <div class="age-input-frame" id="iqAgeScreen">
-        <h3 style="color:#fff; margin:0;">[⚠ INTERCEPT: AGE CALIBRATION REQUIRED]</h3>
-        <p style="font-size: 12px; color:#888; margin-top:5px;">Cognitive metrics scaling variables require user base age data.</p>
-        <label style="font-size: 14px; display:block;">ENTER YOUR CURRENT AGE:</label>
-        <input type="number" id="userAgeInput" class="age-field" min="5" max="100" value="16">
-        <br>
-        <button class="iq-start-btn" onclick="compileFinalIQScore()">PROCEED TO CORE CALCULATION ></button>
-    </div>
-
-    <!-- Screen 4: Final Analytics -->
-    <div class="iq-result-frame" id="iqResultScreen"></div>
+    <!-- Puzzle score only; this is not an IQ or cognitive assessment. -->
+    <div class="iq-result-frame" id="iqResultScreen" aria-live="polite"></div>
 </div>
 
 <script>
@@ -278,12 +268,12 @@ html { scroll-behavior: smooth; }
     function renderIQNode() {
         if(iqIdx >= hardcodedIQMatrix.length) {
             document.getElementById('iqQuestionScreen').style.display = 'none';
-            document.getElementById('iqAgeScreen').style.display = 'block';
+            compileFinalIQScore();
             return;
         }
 
         const data = hardcodedIQMatrix[iqIdx];
-        document.getElementById('iqProgressTxt').innerText = `NODE PROTOCOL: ${iqIdx + 1}/3`;
+        document.getElementById('iqProgressTxt').textContent = `Question ${iqIdx + 1} of ${hardcodedIQMatrix.length}`;
         
         const badge = document.getElementById('iqLevelBadge');
         badge.innerText = data.level;
@@ -297,7 +287,7 @@ html { scroll-behavior: smooth; }
         data.opts.forEach((op, index) => {
             const b = document.createElement('button');
             b.className = 'iq-option';
-            b.innerText = `[x] ${op}`;
+            b.textContent = op;
             b.onclick = () => {
                 if(index === data.correct) correctAnswersCount++;
                 iqIdx++;
@@ -308,49 +298,35 @@ html { scroll-behavior: smooth; }
     }
 
     function compileFinalIQScore() {
-        const ageVal = parseInt(document.getElementById('userAgeInput').value) || 16;
-        document.getElementById('iqAgeScreen').style.display = 'none';
-        
         const resFrame = document.getElementById('iqResultScreen');
+        const title = document.createElement('h3');
+        title.textContent = 'Puzzle results';
+        title.style.cssText = 'text-align:center; color:#fff; margin:0 0 12px;';
+
+        const score = document.createElement('p');
+        score.textContent = `You solved ${correctAnswersCount} of ${hardcodedIQMatrix.length} puzzles.`;
+        score.style.cssText = 'text-align:center; color:#00f2fe; font-size:20px; font-weight:bold;';
+
+        const note = document.createElement('p');
+        note.textContent = 'This short puzzle game is for fun only. It does not measure IQ, intelligence, learning ability, or cognitive health.';
+        note.style.cssText = 'background:rgba(255,255,255,0.03); padding:12px; border-radius:6px; font-size:13px; color:#cbd5e1;';
+
+        const retry = document.createElement('button');
+        retry.type = 'button';
+        retry.className = 'iq-start-btn';
+        retry.style.marginTop = '15px';
+        retry.textContent = 'Try again';
+        retry.addEventListener('click', resetWholeIQEngine);
+
+        resFrame.replaceChildren(title, score, note, retry);
         resFrame.style.display = 'block';
-
-        // Custom brainy formula
-        let baseIQ = 85 + (correctAnswersCount * 15);
-        if(ageVal <= 17 && correctAnswersCount === 3) baseIQ += 10; // Extra credit for sharp youngsters (like Shivansh vibe)
-        baseIQ += Math.floor(Math.random() * 5); // Micro entropy
-
-        let rank = "";
-        let comment = "";
-        let uiColor = "";
-
-        if(correctAnswersCount === 3) {
-            rank = "⚡ ELITE CYBER SYSTEM CORE (GENIUS) 🧬";
-            uiColor = "#00f2fe";
-            comment = `Umra hai ${ageVal} saal aur dimaag ekdum supercomputer! Aapka logical spectrum normal insano se 99% aage hai. Masterclass level.`;
-        } else if(correctAnswersCount === 2) {
-            rank = "💻 ADVANCED ANALYST CODE (ABOVE AVERAGE) ⚙️";
-            uiColor = "#00ffaa";
-            comment = `Age ${ageVal} ke standard par aapka dimaag bohot tez chal raha hai, bas thode se logic loops miss ho gaye. Solid coder material!`;
-        } else {
-            rank = "🖥️ SYSTEM FAULT: REBOOT REQUIRED (ROOKIE NOOB) ⚠️";
-            uiColor = "#ff3333";
-            comment = `Age ${ageVal} ho gayi par trick questions ne dimaag ghumadiya! ${ageVal} ki umra me thoda badam khao bhai, loops uljhe hue hain.`;
-        }
-
-        resFrame.innerHTML = `
-            <div style="text-align:center; font-weight:bold; margin-bottom:15px; border-bottom: 2px solid ${uiColor}; padding-bottom:10px;">📊 INTEL STATS GENERATED</div>
-            <p><strong>[+] USER REGISTERED AGE :</strong> <span style="color:#fff;">${ageVal} Years</span></p>
-            <p><strong>[+] SCALED IQ SCORE    :</strong> <span style="color:${uiColor}; font-size:20px; font-weight:bold;">${baseIQ}</span></p>
-            <p><strong>[+] THREAT CAPACITY    :</strong> <span style="color:${uiColor}; font-weight:bold;">${rank}</span></p>
-            <p style="background:rgba(255,255,255,0.03); padding:12px; border-radius:6px; font-size:12px; color:#cbd5e1; border-left: 3px solid ${uiColor};">${comment}</p>
-            <button class="iq-start-btn" style="margin-top:15px;" onclick="resetWholeIQEngine()">RE-RUN MATRIX INDEX</button>
-        `;
     }
 
     function resetWholeIQEngine() {
         iqIdx = 0;
         correctAnswersCount = 0;
         document.getElementById('iqResultScreen').style.display = 'none';
+        document.getElementById('iqQuestionScreen').style.display = 'none';
         document.getElementById('iqWelcomeScreen').style.display = 'block';
     }
              </script>
@@ -438,6 +414,12 @@ body {
         }
         .nav-cta::after { display: none !important; }
         .nav-cta:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(240,192,64,0.35) !important; }
+        .nav-links a:focus-visible, .hamburger:focus-visible, .class-tab-btn:focus-visible,
+        .mood-btn:focus-visible, .mood-option-item:focus-visible,
+        .iq-start-btn:focus-visible, .iq-option:focus-visible {
+            outline: 3px solid #f0c040;
+            outline-offset: 3px;
+        }
         .hamburger {
             display: none; flex-direction: column; gap: 5px; cursor: pointer;
             background: none; border: none; padding: 4px;
@@ -768,16 +750,17 @@ body {
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            nav { padding: 14px 20px; }
+            nav { padding: 14px 16px; }
+            nav.scrolled { padding: 10px 16px; }
             .nav-links {
-                position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+                position: fixed; top: 0; right: -100%; width: min(280px, 100vw); max-width: 100vw; height: 100dvh;
                 background: rgba(10,14,23,0.98); backdrop-filter: blur(20px);
                 flex-direction: column; padding: 80px 30px 30px; gap: 20px;
                 transition: 0.4s ease; border-left: 1px solid rgba(255,255,255,0.06);
-                align-items: flex-start;
+                align-items: flex-start; overflow-y: auto; visibility: hidden;
             }
-            .nav-links.open { right: 0; }
-            .hamburger { display: flex; }
+            .nav-links.open { right: 0; visibility: visible; }
+            .hamburger { display: flex; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; position: relative; z-index: 1001; }
             section { padding: 70px 20px; }
             .about-grid { grid-template-columns: 1fr; gap: 30px; }
             .about-img-wrap img { height: 280px; }
@@ -801,7 +784,7 @@ body {
 
     <!-- NAV -->
     <nav id="navbar">
-        <a href="#" class="nav-logo">
+        <a href="#home" class="nav-logo">
             <div class="logo-box">SC</div>
             <span>Silver City Academy</span>
         </a>
@@ -814,7 +797,7 @@ body {
             <li><a href="#admission">Admission</a></li>
             <li><a href="#contact" class="nav-cta">Contact</a></li>
         </ul>
-        <button class="hamburger" id="hamburger" aria-label="Menu">
+        <button class="hamburger" id="hamburger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">
             <span></span><span></span><span></span>
         </button>
     </nav>
@@ -1032,13 +1015,11 @@ body {
     <!-- FOOTER -->
     <footer>
         <div class="socials"> 
-            <a href="https://www.facebook.com/share/1BS3s5F8Db/" title="Facebook" taget="_blank">📘 Facebook</a>
-            <a href="https://www.instagram.com/shivansh_goswami_75?igsh=MWNzdncxaTNiMWNwZw==" title="Instagram" target="_blank">📸 Instagram</a>
+            <a href="https://www.facebook.com/share/1BS3s5F8Db/" title="Facebook" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
+            <a href="https://www.instagram.com/shivansh_goswami_75?igsh=MWNzdncxaTNiMWNwZw==" title="Instagram" target="_blank" rel="noopener noreferrer">📸 Instagram</a>
          
-            <a href="#" title="YouTube">🎬</a>
-            <a href="#" title="Twitter">🐦</a>
-        </div>
-        <p>&copy; 2026 <a href="#">Silver City Academy</a>. All rights reserved.</p>
+                    </div>
+        <p>&copy; 2026 <a href="#home">Silver City Academy</a>. All rights reserved.</p>
         <p style="margin-top:6px;">📍 Bankeyganj Road, Gola Gokarnath, Lakhimpur Kheri, UP</p>
     </footer>
 
@@ -1092,23 +1073,36 @@ body {
             // === NAVBAR SCROLL EFFECT ===
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-        navbar.classList.toggle('scaled', window.scrollY > 60);
-    });
+        navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
 
-    // === MOBILE HAMBURGER ===
+    // === ACCESSIBLE MOBILE NAVIGATION ===
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('open');
-    });
+    const mobileNavQuery = window.matchMedia('(max-width: 768px)');
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navLinks.classList.remove('open');
-        });
+    function setNavigationOpen(open) {
+        hamburger.classList.toggle('active', open);
+        navLinks.classList.toggle('open', open);
+        hamburger.setAttribute('aria-expanded', String(open));
+        hamburger.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+        navLinks.toggleAttribute('inert', mobileNavQuery.matches && !open);
+    }
+
+    setNavigationOpen(false);
+    hamburger.addEventListener('click', () => {
+        setNavigationOpen(hamburger.getAttribute('aria-expanded') !== 'true');
     });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => setNavigationOpen(false));
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && hamburger.getAttribute('aria-expanded') === 'true') {
+            setNavigationOpen(false);
+            hamburger.focus();
+        }
+    });
+    mobileNavQuery.addEventListener('change', () => setNavigationOpen(false));
 
     // === SCROLL REVEAL ===
     const revealElements = document.querySelectorAll('.reveal');
@@ -1166,6 +1160,7 @@ window.addEventListener('DOMContentLoaded', () => {
         margin-bottom: 30px;
     }
     .class-tab-btn {
+        min-width: 0;
         background: #0d1321;
         color: #fff;
         border: 1px solid rgba(240,192,64,0.4);
@@ -1182,13 +1177,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     .subject-grid {
         display: none;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
         gap: 20px;
     }
     .subject-grid.active-grid {
         display: grid;
     }
     .sub-card {
+        min-width: 0;
         background: #0d1321;
         border: 1px solid rgba(255,255,255,0.06);
         border-radius: 16px;
@@ -1212,7 +1208,7 @@ window.addEventListener('DOMContentLoaded', () => {
         flex-direction: column;
         gap: 10px;
     }
-    .action-links a {
+    .action-links a, .action-links .notes-unavailable {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1233,12 +1229,10 @@ window.addEventListener('DOMContentLoaded', () => {
         background: rgba(255,255,255,0.12);
     }
     .btn-notes {
-        background: linear-gradient(135deg, #f0c040, #d4942a);
-        color: #0a0e17;
-    }
-    .btn-notes:hover {
-        opacity: 0.9;
-        box-shadow: 0 4px 12px rgba(240,192,64,0.2);
+        background: rgba(255,255,255,0.04);
+        color: rgba(255,255,255,0.62);
+        border: 1px dashed rgba(255,255,255,0.2);
+        cursor: not-allowed;
     }
 
     /* ====== MASTER DEVELOPER ROLA SECTION ====== */
@@ -1254,6 +1248,13 @@ window.addEventListener('DOMContentLoaded', () => {
         box-shadow: 0 10px 40px rgba(0,0,0,0.5);
     }
     .creator-avatar-box {
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at 30% 25%, #263554, #0a0e17 72%);
+        color: #f0c040;
+        font-family: 'Playfair Display', serif;
+        font-size: 34px;
+        font-weight: 700;
         width: 120px;
         height: 120px;
         border-radius: 50%;
@@ -1262,7 +1263,6 @@ window.addEventListener('DOMContentLoaded', () => {
         box-shadow: 0 0 20px rgba(240,192,64,0.4);
         flex-shrink: 0;
     }
-    .creator-avatar-box img { width: 100%; height: 100%; object-fit: cover; }
     .creator-details h3 {
         margin: 0 0 5px 0;
         font-family: 'Playfair Display', serif;
@@ -1290,104 +1290,111 @@ window.addEventListener('DOMContentLoaded', () => {
     @media (max-width: 768px) {
         .creator-dossier { flex-direction: column; text-align: center; padding: 20px; }
     }
+    @media (max-width: 480px) {
+        .smart-hub-container { margin: 24px 12px; padding: 16px; border-radius: 16px; }
+        .class-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+        .class-tab-btn { min-height: 44px; padding: 10px 8px; }
+        .subject-grid { grid-template-columns: minmax(0, 1fr); }
+        .action-links a, .action-links .notes-unavailable { overflow-wrap: anywhere; }
+    }
 </style>
 
 <div class="smart-hub-container">
     <h3 class="hub-title">📚 NCERT Smart Study Note</h3>
-    <p class="hub-subtitle">Class 9th to 12th Official Textbooks, Solutions &amp; Exclusive Notes</p>
+    <p class="hub-subtitle">Class 9th to 12th official textbooks and solutions</p>
 
-    <div class="class-tabs">
-        <button class="class-tab-btn active-tab" onclick="switchClassGrid('c9', this)">Class 9</button>
-        <button class="class-tab-btn" onclick="switchClassGrid('c10', this)">Class 10</button>
-        <button class="class-tab-btn" onclick="switchClassGrid('c11', this)">Class 11</button>
-        <button class="class-tab-btn" onclick="switchClassGrid('c12', this)">Class 12</button>
+    <div class="class-tabs" role="tablist" aria-label="Choose a class">
+        <button id="tab-c9" class="class-tab-btn active-tab" type="button" role="tab" aria-selected="true" aria-controls="grid-c9" tabindex="0" data-class-id="c9" onclick="switchClassGrid('c9', this)">Class 9</button>
+        <button id="tab-c10" class="class-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="grid-c10" tabindex="-1" data-class-id="c10" onclick="switchClassGrid('c10', this)">Class 10</button>
+        <button id="tab-c11" class="class-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="grid-c11" tabindex="-1" data-class-id="c11" onclick="switchClassGrid('c11', this)">Class 11</button>
+        <button id="tab-c12" class="class-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="grid-c12" tabindex="-1" data-class-id="c12" onclick="switchClassGrid('c12', this)">Class 12</button>
     </div>
 
-    <div id="grid-c9" class="subject-grid active-grid">
+    <div id="grid-c9" class="subject-grid active-grid" role="tabpanel" aria-labelledby="tab-c9" tabindex="0">
         <div class="sub-card">
             <h4>📐 Mathematics</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?iemh1=0-15" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?iemh1=0-15" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
         <div class="sub-card">
             <h4>🧪 Science</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?iesc1=0-15" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?iesc1=0-15" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
     </div>
 
-    <div id="grid-c10" class="subject-grid">
+    <div id="grid-c10" class="subject-grid" role="tabpanel" aria-labelledby="tab-c10" tabindex="0" hidden>
         <div class="sub-card">
             <h4>📐 Mathematics</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?jemh1=0-15" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?jemh1=0-15" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
         <div class="sub-card">
             <h4>🧪 Science</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?jesc1=0-16" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?jesc1=0-16" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
     </div>
 
-    <div id="grid-c11" class="subject-grid">
+    <div id="grid-c11" class="subject-grid" role="tabpanel" aria-labelledby="tab-c11" tabindex="0" hidden>
         <div class="sub-card">
             <h4>🧬 Biology</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?kebo1=0-22" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?kebo1=0-22" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
         <div class="sub-card">
             <h4>⚗️ Chemistry</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?kech1=0-9" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?kech1=0-9" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
         <div class="sub-card">
             <h4>🧲 Physics</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?keph1=0-8" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?keph1=0-8" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
     </div>
 
-    <div id="grid-c12" class="subject-grid">
+    <div id="grid-c12" class="subject-grid" role="tabpanel" aria-labelledby="tab-c12" tabindex="0" hidden>
         <div class="sub-card">
             <h4>🧬 Biology</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?lebo1=0-16" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?lebo1=0-16" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
         <div class="sub-card">
             <h4>⚗️ Chemistry</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?lech1=0-9" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?lech1=0-9" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
         <div class="sub-card">
             <h4>🧲 Physics</h4>
             <div class="action-links">
-                <a href="https://ncert.nic.in/textbook.php?leph1=0-14" target="_blank" class="btn-books">📖 Book &amp; Best Solutions</a>
-                <a href="#" class="btn-notes">✨ Exclusive Notes</a>
+                <a href="https://ncert.nic.in/textbook.php?leph1=0-14" target="_blank" rel="noopener noreferrer" class="btn-books">📖 Book &amp; Best Solutions</a>
+                <span class="btn-notes notes-unavailable" aria-disabled="true">✨ Notes not published yet</span>
             </div>
         </div>
     </div>
 
     <div class="creator-dossier">
         <div class="creator-avatar-box">
-            <img src="1000006803.webp" alt="Shivansh Goswami" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+            <span aria-hidden="true">SG</span>
         </div>
         <div class="creator-details">
             <h3>Shivansh Goswami</h3>
@@ -1399,19 +1406,37 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <script>
     function switchClassGrid(classId, btn) {
-        // Saare grids hide karo
+        const panel = document.getElementById('grid-' + classId);
+        if (!panel || !btn) return;
         document.querySelectorAll('.subject-grid').forEach(grid => {
             grid.classList.remove('active-grid');
+            grid.hidden = true;
         });
-        // Saare buttons se active class hatao
-        document.querySelectorAll('.class-tab-btn').forEach(b => {
-            b.classList.remove('active-tab');
+        document.querySelectorAll('.class-tab-btn').forEach(tab => {
+            tab.classList.remove('active-tab');
+            tab.setAttribute('aria-selected', 'false');
+            tab.tabIndex = -1;
         });
-        
-        // Sahi wale ko show karo
-        document.getElementById('grid-' + classId).classList.add('active-grid');
+        panel.hidden = false;
+        panel.classList.add('active-grid');
         btn.classList.add('active-tab');
+        btn.setAttribute('aria-selected', 'true');
+        btn.tabIndex = 0;
     }
+
+    document.querySelectorAll('.class-tab-btn').forEach((tab, index, tabs) => {
+        tab.addEventListener('keydown', event => {
+            let next = index;
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % tabs.length;
+            else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + tabs.length) % tabs.length;
+            else if (event.key === 'Home') next = 0;
+            else if (event.key === 'End') next = tabs.length - 1;
+            else return;
+            event.preventDefault();
+            tabs[next].focus();
+            switchClassGrid(tabs[next].dataset.classId, tabs[next]);
+        });
+    });
 </script>
              
 <!-- Footer Section -->
@@ -1506,7 +1531,7 @@ window.addEventListener('DOMContentLoaded', () => {
 <div class="cyber-toggle-wrapper">
     <!-- Trigger Button using your logo -->
     <button class="cyber-toggle-btn" onclick="toggleHackerMode()" title="Toggle Cyber Hacker Mode">
-        <img src="1000006803.webp" alt="Cyber Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/7228/7228651.png'">
+        <img src="1000008534.png" alt="Silver City Academy seal">
     </button>
 </div>
 
@@ -1659,7 +1684,7 @@ Type 'help' to see available cyber commands.
         
         if(!command) return;
 
-        outputEl.innerHTML += `\nguest@shivansh-net:~$ ${command}\n`;
+        outputEl.textContent += `\nguest@shivansh-net:~$ ${command}\n`;
         
         let reply = "";
         if (command === 'help') {
@@ -1669,14 +1694,14 @@ Type 'help' to see available cyber commands.
         } else if (command === 'matrix') {
             reply = "SYSTEM WARNING: ACCESSING SECURITY NETWORK...\n[||||||||||||||||||||] 100% DONE.\nALL SYSTEMS STABLE. ZERO EXPLOITS FOUND.";
         } else if (command === 'clear') {
-            outputEl.innerHTML = "";
+            outputEl.textContent = "";
             inputEl.value = "";
             return;
         } else {
             reply = `bash: command not found: ${command}. Type 'help' for options.`;
         }
 
-        outputEl.innerHTML += reply + "\n";
+        outputEl.textContent += reply + "\n";
         inputEl.value = "";
         outputEl.scrollTop = outputEl.scrollHeight;
     }
@@ -1953,6 +1978,9 @@ Type 'help' to see available cyber commands.
         gap: 12px;
     }
     .mood-option-item {
+        width: 100%;
+        text-align: left;
+        font-family: 'Inter', sans-serif;
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
         padding: 14px;
@@ -2023,38 +2051,67 @@ Type 'help' to see available cyber commands.
 </style>
 
 <div class="mood-trigger-wrapper">
-    <button class="mood-btn" onclick="openMoodModal()">🧠 VIBE CHECK</button>
+    <button class="mood-btn" type="button" aria-haspopup="dialog" aria-controls="moodModal" onclick="openMoodModal()">🧠 VIBE CHECK</button>
 </div>
 
-<div class="mood-modal-overlay" id="moodModal">
+<div class="mood-modal-overlay" id="moodModal" role="dialog" aria-modal="true" aria-labelledby="moodModalTitle" aria-describedby="moodModalDescription" tabindex="-1">
     <div class="mood-modal-card">
-        <h3>Sync Website Vibe</h3>
-        <p>Select your current mind state to recalibrate the neural core environment interface:</p>
+        <h3 id="moodModalTitle">Sync Website Vibe</h3>
+        <p id="moodModalDescription">Choose a display theme:</p>
         <div class="mood-options-list">
-            <div class="mood-option-item" style="border-left: 4px solid #4facfe;" onclick="applyVibe('normal')">
+            <button type="button" class="mood-option-item" style="border-left: 4px solid #4facfe;" onclick="applyVibe('normal')">
                 <span>⚡ Default System Grid</span> <span>[Reset]</span>
-            </div>
-            <div class="mood-option-item" style="border-left: 4px solid #a0a0a5;" onclick="applyVibe('exhausted')">
+            </button>
+            <button type="button" class="mood-option-item" style="border-left: 4px solid #a0a0a5;" onclick="applyVibe('exhausted')">
                 <span>😴 Exhausted after Exams</span> <span>[Zen Dark]</span>
-            </div>
-            <div class="mood-option-item" style="border-left: 4px solid #ff3e3e;" onclick="applyVibe('rola')">
+            </button>
+            <button type="button" class="mood-option-item" style="border-left: 4px solid #ff3e3e;" onclick="applyVibe('rola')">
                 <span>🔥 Full Rowdy Rola Mood</span> <span>[Overdrive]</span>
-            </div>
-            <div class="mood-option-item" style="border-left: 4px solid #00ffaa;" onclick="applyVibe('peaceful')">
+            </button>
+            <button type="button" class="mood-option-item" style="border-left: 4px solid #00ffaa;" onclick="applyVibe('peaceful')">
                 <span>🍃 Peaceful Study Focus</span> <span>[Mint Aura]</span>
-            </div>
+            </button>
         </div>
     </div>
 </div>
 
 <script>
+    let moodReturnFocus = null;
+    const moodModal = document.getElementById('moodModal');
+
     function openMoodModal() {
-        document.getElementById('moodModal').style.display = 'flex';
+        moodReturnFocus = document.activeElement;
+        moodModal.style.display = 'flex';
+        moodModal.querySelector('.mood-option-item').focus();
     }
 
     function closeMoodModal() {
-        document.getElementById('moodModal').style.display = 'none';
+        moodModal.style.display = 'none';
+        if (moodReturnFocus) moodReturnFocus.focus();
     }
+
+    moodModal.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeMoodModal();
+            return;
+        }
+        if (event.key !== 'Tab') return;
+        const choices = Array.from(moodModal.querySelectorAll('.mood-option-item'));
+        const first = choices[0];
+        const last = choices[choices.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
+    moodModal.addEventListener('click', event => {
+        if (event.target === moodModal) closeMoodModal();
+    });
 
     function applyVibe(vibeName) {
         // Purane saare vibes clear karo body se
@@ -2069,13 +2126,6 @@ Type 'help' to see available cyber commands.
         closeMoodModal();
     }
 
-    // Modal ke bahar click karne par window close ho jaye uske liye controller
-    window.onclick = function(event) {
-        const modal = document.getElementById('moodModal');
-        if (event.target == modal) {
-            closeMoodModal();
-        }
-    }
 </script>
              
 </body>
