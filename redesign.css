@@ -396,7 +396,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 footer {
   position: relative; z-index: 1; margin: 0; padding: 32px 22px;
-  border-top: 1px solid var(--line); background: var(--page); color: var(--muted); text-align: center; font-size: 12px;
+  border-top: 1px solid var(--line); background: var(--surface); color: var(--muted); text-align: center; font-size: 12px;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
 }
 footer a { color: var(--accent) !important; text-decoration: none; }
 footer .socials { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; margin: 0 0 16px; }
@@ -405,6 +406,10 @@ footer .socials a:hover { border-color: var(--accent); color: var(--accent); tra
 footer p { color: var(--muted) !important; }
 footer p:first-child { color: var(--accent) !important; }
 footer p span { color: var(--ink) !important; }
+.project-footer { margin-top: 50px; padding: 30px 20px; }
+.project-footer .footer-credit { margin: 0; font-size: 16px; letter-spacing: 1px; }
+.project-footer .footer-credit span { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; }
+.project-footer .footer-disclaimer { max-width: 600px; margin: 10px auto 0; font-size: 12px; line-height: 1.6; opacity: .85; }
 
 .smart-hub-container { max-width: 1144px; margin: 54px auto; padding: clamp(20px, 4vw, 32px); border: 1px solid var(--line); border-radius: var(--card-radius); background: var(--surface); color: var(--ink); box-shadow: var(--panel-shadow); }
 .hub-title { margin: 0 0 8px; color: var(--accent); text-align: center; font: 700 27px/1.25 var(--font-display); text-shadow: none; }
